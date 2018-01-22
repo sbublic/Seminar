@@ -1,0 +1,535 @@
+\documentclass[9pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[all]{xy}
+\usepackage{amssymb}
+
+
+\usetheme{Madrid} 
+\usecolortheme{beaver}
+  
+\title{Izrada grafika koristeći picture i Xy-pic}
+\author{Petra Avsec, Luka Bibić, Sara Bublić}
+\date{2018}
+ 
+ 
+ 
+\begin{document}
+
+	\frame{\titlepage}
+
+\begin{frame}
+	\frametitle{Picture okruženje}
+
+	\begin{itemize}
+		\item Picture okruženje se koristi za izradu jednostavnih dijagrama i grafika (pravaca, vektora, krivulja)
+		\item Dostupan je u svakoj \LaTeX\ distribuciji te za njega nije potrebno učitavati dodatne pakete
+		\item Može se proširivati s paketima kao što su \textbf{pict2e}, \textbf{eepic} ili \textbf{pstricks} koji će proširiti mogućnosti izrade grafika
+	\end{itemize}	
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Picture okruženje}
+
+	\begin{itemize}
+		\item Sve što želimo nacrtati mora se nalaziti unutar \textbf{picture} okruženja. Picture okruženje započinjemo sljedećim naredbama:
+	\end{itemize}
+
+	
+	\begin{verbatim}
+	\begin{picture}(širina, visina)(pomak po x-osi, pomak po y) 
+	...
+	\end{picture}
+	\end{verbatim}
+
+	\begin{itemize}
+	\item Širina i visina određuju dimenzije \textbf{picture} okruženja, a pomak po x i y-osi su koordinate za donji lijevi kut slike i opcionalni su. 
+	\item Brojevi koje unesemo kao širinu i visinu bit će u vrijednostima \textbf{unitlengtha} koji je zadan kao 1pt. Ovo možemo promijeniti tako da upišemo sljedeću naredbu prije početka picture okruženja:
+	\end{itemize}	
+
+	\begin{verbatim}\setlength{\unitlength}{1cm}\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - pravci i vektori}
+	\begin{itemize}
+		\item Pravce crtamo naredbom: \begin{verbatim}\put(x, y){\line(a, b){c}}\end{verbatim}
+		\item (x, y) je početna točka pravca, točka (a, b) označava smjer pravca i ograničena je na vrijednosti \{-6, -5, ..., 5, 6\}, a broj c je duljina projekcije pravca
+	\end{itemize}
+
+	\begin{itemize}
+	\item Vektore crtamo naredbom: \begin{verbatim}\put(x, y){\vector(a, b){c}}\end{verbatim}
+	\item Jedina razlika u pisanju koda za crtanje vektora je ta što je smjer pravca kod vektora ograničen na vrijednosti \{-4, -3, ..., 3, 4\}
+	\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - pravci i vektori}
+
+	\begin{columns}
+	\column{0.3\textwidth}
+	\begin{verbatim}
+	\setlength{\unitlength}{1.4cm}
+	\begin{picture}(4, 4) 
+	\put(2, 2){\line(-1, 3){.6}}
+	\put(2, 2){\line(-2, 3){1}}
+	\put(2, 2){\line(3, 2){1.8}}
+	\put(2, 2){\line(-1, 0){1.5}}
+	\put(2, 2){\line(0, 1){1.5}}
+	\put(4, 0){\vector(0, 1){2}}
+	\put(4, 0){\vector(-1, 3){.5}}
+	\put(4, 0){\vector(-1, 0){2}}
+	\put(4, 0){\vector(-2, 3){1.25}}
+	\end{picture}
+	\end{verbatim}
+	
+	\column{0.5\textwidth}	
+	\setlength{\unitlength}{1.4cm}
+	\begin{picture}(4, 4) 
+		\put(2, 2){\line(-1, 3){.6}}
+		\put(2, 2){\line(-2, 3){1}}
+		\put(2, 2){\line(3, 2){1.8}}
+		\put(2, 2){\line(-1, 0){1.5}}
+		\put(2, 2){\line(0, 1){1.5}}
+		\put(4, 0){\vector(0, 1){2}}
+		\put(4, 0){\vector(-1, 3){.5}}
+		\put(4, 0){\vector(-1, 0){2}}
+		\put(4, 0){\vector(-2, 3){1.25}}
+	\end{picture}
+	\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - pravci i vektori}
+	\begin{itemize}
+		\item Crteže možemo pobliže opisati tekstom, a to radimo naredbom: \begin{verbatim}\put(x, y){\footnotesize Tekst }\end{verbatim}
+		\item (x, y) su koordinate točke u kojoj tekst počinje
+	\end{itemize}
+
+	\setlength{\unitlength}{0.8cm}
+	\begin{picture}(6, 4) 
+		\put(5,3.3){{\footnotesize Piramida}}
+		\put(5,3){\line(3,-2){2}}
+		\put(6,1){\line(3,2){1}}
+		\put(4,1){\line(1,0){2}}
+		\put(6.8,2){{\footnotesize Piramida}}
+		\put(2.5,2){{\footnotesize Piramida}}
+		\put(4,1){\line(1,2){1}}
+		\put(6,1){\line(-1,2){1}}
+		\put(5, 0.5){{\footnotesize Piramida}}
+	\end{picture}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - kružnice}
+
+	\begin{itemize}
+		\item Kružnice crtamo naredbom: \begin{verbatim}\put(x, y){\circle{promjer}}\end{verbatim}
+		\item Želimo li nacrtati punu kružnicu pišemo naredbu \begin{verbatim}\put(x, y){\circle*{promjer}}\end{verbatim}
+	\end{itemize}
+
+	\begin{columns}
+	\column{0.4\textwidth}
+		\begin{verbatim}
+		\begin{picture}(4, 4)
+		\put(1, 2){\circle{2}}
+		\put(1, 2){\circle{1}}
+		\put(1, 2){\circle{.5}}
+		\put(3, 2){\circle*{0.4}}
+		\put(2.3, 2){\circle*{0.2}}
+		\put(3.8, 2){\circle*{1}}
+		\end{picture}
+		\end{verbatim}
+
+	\column{0.4\textwidth}
+		\setlength{\unitlength}{1cm}
+		\begin{picture}(4, 4)
+		\put(1, 2){\circle{2}}
+		\put(1, 2){\circle{1}}
+		\put(1, 2){\circle{.5}}
+		\put(3, 2){\circle*{0.4}}
+		\put(2.3, 2){\circle*{0.2}}
+		\put(3.8, 2){\circle*{1}}
+		\end{picture}
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - debljina linija}
+
+	\begin{itemize}
+		\item Debljinu linija moguće je manipulirati pomoću naredbi \begin{verbatim}\linethickness{debljina}\end{verbatim}
+	\end{itemize}
+
+\begin{columns}
+	\column{0.3\textwidth}
+	\begin{verbatim}
+	\begin{picture}(4, 4) 
+		\linethickness{0.075mm}
+		\put(2, 2){\line(0, 1){1.5}}
+		\linethickness{0.5mm}
+		\put(1.5, 2){\line(0, 1){1.5}}
+		\linethickness{1mm}
+		\put(1, 2){\line(0, 1){1.5}}
+	\end{picture}
+	\end{verbatim}
+	
+	\column{0.5\textwidth}	
+	\setlength{\unitlength}{1.4cm}
+	\begin{picture}(4, 4) 
+		\linethickness{0.075mm}
+		\put(2, 1){\line(0, 1){1.75}}
+		\linethickness{0.5mm}
+		\put(2.5, 1){\line(0, 1){1.75}}
+		\linethickness{1mm}
+		\put(3, 1){\line(0, 1){1.75}}
+	\end{picture}
+	\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - Bézierove krivulje}
+
+	\begin{itemize}
+		\item Bézierove krivulje crtamo pomoću naredbe \textbf{qbezier} te definiramo koristeći 3 argumenta: početna točka, krajnja točka i treća koja određuje zakrivljenost krivulje
+	\end{itemize}
+
+	\begin{verbatim}	\qbezier(početna točka)(krajnja točka)(zakrivljenost)\end{verbatim}
+
+
+
+\setlength{\unitlength}{0.8cm}
+\begin{picture}(10,7)
+	\thicklines
+	\qbezier(1, 4)(5,5)(9,0.5)
+	\put(3, 5){{Bézierova krivulja}}
+\end{picture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju - naredba multiput}
+
+\begin{columns}
+	\column{0.3\textwidth}
+	\begin{itemize}
+		\item Naredbom \textbf{multiput} stvaramo uzorak koji je građen od više istih objekata koji se ponavljaju (npr. pravci) 
+	\end{itemize}
+	
+	\column{0.5\textwidth}	
+	\setlength{\unitlength}{0.8cm}
+	\begin{picture}(6,4)
+	\linethickness{0.075mm}
+	\multiput(0,0)(1,0){7}
+	{\line(0,1){4}}
+	\multiput(0,0)(0,1){5}
+	{\line(1,0){6}}
+	
+\end{picture}
+\end{columns}
+
+\fontsize{7}{10}	\begin{verbatim}
+\multiput(koordinate prve linije)(koordinate sljedeće linije){broj ponavljanja linija}
+					{\line(smjer pravca){duljina}}\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Crtanje u picture okruženju }
+\begin{itemize} 
+	\item Primjer korištenja naredbe \textbf{qbezier} i \textbf{multiput} u istom okruženju.
+\end{itemize}
+
+\begin{columns}
+	\column{0.1\textwidth}
+
+	\column{0.7\textwidth}	
+		\setlength{\unitlength}{0.8cm}
+		\begin{picture}(6,4)
+		\linethickness{0.075mm}
+		\multiput(0,0)(1,0){7}
+		{\line(0,1){4}}
+		\multiput(0,0)(0,1){5}
+		{\line(1,0){6}}
+		\thicklines
+		\put(0.5,0.5){\line(1,5){0.5}}
+		\put(1,3){\line(4,1){2}}
+		\qbezier(0.5,0.5)(1,3)(3,3.5)
+		\thinlines
+		\put(2.5,2){\line(2,-1){3}}
+		\put(5.5,0.5){\line(-1,5){0.5}}
+		\linethickness{1mm}
+		\qbezier(2.5,2)(5.5,0.5)(5,3)
+		\thinlines
+		\qbezier(4,2)(4,3)(3,3)
+		\qbezier(3,3)(2,3)(2,2)
+		\qbezier(2,2)(2,1)(3,1)
+		\qbezier(3,1)(4,1)(4,2)
+		\end{picture}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{XY - pic okruženje}
+
+\begin{itemize}
+	\item \textbf{Xy – pic} je poseban paket koji se također koristi za crtanje dijagrama.
+	\item Kako bi ga mogli pravilno koristiti, potrebno je u preambulu dokumenta dodati paket: 	\textbf{usepackage[all]{xy}}
+	koji je potreban kako bi mogli koristiti sve funkcije koje bi nam mogle biti  potrebne za crtanje dijagrama.
+	
+	\item Xy – pic dijagrame crtamo pomoću \textbf{matrica} gdje svaki element dijagrama zauzima mjesto u jednom polju matrice.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{XY - pic - Crtanje matrica}
+
+\begin{itemize}
+	\item Kako nacrtati matricu: 
+\end{itemize}
+
+\begin{columns}
+	\column{0.3\textwidth}
+	\begin{verbatim}
+	\begin{displaymath}
+	\xymatrix{A & B \\
+	C & D }
+	\end{displaymath} 
+	\end{verbatim}
+	
+	\column{0.5\textwidth}
+	\begin{displaymath}
+	\xymatrix{A & B \\
+		C & D }
+	\end{displaymath}
+\end{columns}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{XY - pic - Crtanje dijagrama}
+
+\begin{itemize}
+	\item Kako iz matrice dobiti dijagram koristeći \textbf{vektore}
+	\item Naredba kojom crtamo vektore:
+	\begin{verbatim} \ar[argument kojim određujemo u kojem će se pravcu kretati vektor]\end{verbatim}
+	\item Argument: l - left, r - right, u - up, d - down, ili kombinirano (npr. dr - down and right)
+\end{itemize}
+
+\begin{columns}
+	\column{0.3\textwidth}
+	\begin{verbatim} 
+	\begin{displaymath}
+	\xymatrix{ A \ar[r] & B \ar[d] \\
+	D \ar[u] & C \ar[l] }
+	\end{displaymath}
+	\end{verbatim}
+	
+	\column{0.5\textwidth}
+	\begin{displaymath}
+	\xymatrix{ A \ar[r] & B \ar[d] \\
+		D \ar[u] & C \ar[l] }
+	\end{displaymath}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{XY - pic - Crtanje dijagrama}
+
+\begin{itemize}
+	\item Koristeći naredbu \begin{verbatim} \ar[argument] \end{verbatim} u kojoj će argument sadržati dva slova 
+	ili više možemo dobiti \textbf{dijagonale} raznih duljina
+	\begin{columns}
+		\column{0.3\textwidth}
+		\begin{verbatim} 
+		\begin{displaymath}
+		\xymatrix{
+		A \ar[d] \ar[dr] \ar[r] & B \\
+		D                       & C }
+		\end{displaymath}
+		
+		ILI
+		
+		\begin{displaymath}
+		\xymatrix{
+		A \ar[d] \ar[dr] \ar[drr] &   &   \\
+		B                         & C & D }
+		\end{displaymath}                     
+		\end{verbatim}
+		
+		\column{0.5\textwidth}
+		\begin{displaymath}
+		\xymatrix{
+			A \ar[d] \ar[dr] \ar[r] & B \\
+			D                       & C }
+		\end{displaymath}
+		
+		\begin{displaymath}
+		\xymatrix{
+			A \ar[d] \ar[dr] \ar[drr] &   &   \\
+			B                         & C & D }
+		\end{displaymath} 
+	\end{columns}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{XY - pic - Izgled dijagrama}
+
+\begin{itemize}
+	\item Pri crtanju složenijih dijagrama važna je \textbf{organizacija} unesenih podataka i dijelova dijagrama. 
+	\item Dijagram mora biti \textbf{čitljiv} jer ukoliko se sastoji od mnogo dijelova koji nisu imenovani niti ičime definirani, dolazi do poteškoća isčitavanja podataka jer se ne zna koja komponenta što predstavlja. 
+	\item Za organiziraniji i uredniji izgled dijagrama koristimo:
+\end{itemize}
+\begin{enumerate}
+	\item Oznake vektora
+	\item Različite vrste strelica
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{XY - pic - Oznake vektora}
+
+\begin{itemize}
+	\item Vektorima je moguće dodijeliti \textbf{oznaku}, odnosno imenovati ih, što doprinosi boljoj organizaciji dijagrama te lakšem isčitavanju unesenih podataka
+	\item Naredba kojom vektorima dajemo oznake: 
+	\begin{verbatim} \ar[argument]^oznaka ili \ar[argument]_oznaka ili \ar[argument]|oznaka \end{verbatim}
+\end{itemize}
+
+\begin{columns}
+	\column{0.2\textwidth}
+	\begin{verbatim}
+	^
+	_
+	|
+	\end{verbatim}
+	\column{0.7\textwidth}
+	postavlja oznaku iznad vektora \\
+	postavlja oznaku ispod vektora \\ 
+	postavlja oznaku unutar vektora \\
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+
+\begin{columns}
+	\column{0.5\textwidth}
+	\begin{verbatim}
+	\begin{displaymath}
+	\xymatrix{
+	A \ar[r]^f \ar[d]_g & B \ar[d]^{g'} \\
+	D \ar[r]_{f'}       & C }
+	\end{displaymath}
+	\end{verbatim}
+
+	\column{0.3\textwidth}
+	\begin{displaymath}
+	\xymatrix{
+		A \ar[r]^f \ar[d]_g & B \ar[d]^{g'} \\
+		D \ar[r]_{f'}       & C }
+	\end{displaymath}
+	
+	\begin{displaymath}
+	\xymatrix{
+		A \ar[r]|f \ar[d]|g & B \ar[d]|{g'} \\
+		D \ar[r]|{f'}       & C }
+	\end{displaymath}
+\end{columns}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+    \frametitle{XY - pic - Izgled vektora}
+    \begin{itemize}
+        \item Vektore možemo u potpunosti mijenjati pomoću znakova koji određuju kako će vektor izgledati, odnosno vektor će se od tih znakova sastojati
+		\item Naredbom \begin{verbatim} \bullet\ar@{->}[rr]   && \bullet\\\end{verbatim} osim samog vektora definirani su:
+    \end{itemize}
+
+    \begin{enumerate}
+		\item Točke između kojih se vektor nalazi: \begin{verbatim} \bullet \end{verbatim}
+		\item Željeni izgled vektora: tijelo \begin{verbatim} -, ., ~, =, ^ \end{verbatim}
+		i vrh \begin{verbatim} >, <, ), (, + \end{verbatim}
+        \begin{verbatim} Npr. Običan vektor sastoji se od znakova {->} \end{verbatim}
+        \item Smjer vektora: \textbf{argument}
+    \end{enumerate}
+    \begin{displaymath}
+            \xymatrix{
+                \bullet\ar@{->}[rr]     && \bullet\\
+                \bullet\ar@{.<}[rr]     && \bullet\\
+                \bullet\ar@{~)}[rr]     && \bullet\\
+                \bullet\ar@{=(}[rr]     && \bullet\\
+                \bullet\ar@{~/}[rr]     && \bullet\\
+                \bullet\ar@{^{(}->}[rr] && \bullet\\
+                \bullet\ar@2{->}[rr]    && \bullet\\
+                \bullet\ar@3{->}[rr]    && \bullet\\
+                \bullet\ar@{=+}[rr]     && \bullet }
+    \end{displaymath}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{XY - pic - Zakrivljenost vektora}
+    
+    \begin{itemize} 
+        \item Kod vektora možemo kontrolirati i zakrivljenost.
+        \item Do sada smo upoznali ravne vektore:
+    \end{itemize}
+    \begin{displaymath}
+            \xymatrix{ \bullet \ar[r] \ar@{.>}[r] & \bullet }
+    \end{displaymath}
+    \begin{itemize}
+		\item Način zakrivljenosti definiramo unutar \begin{verbatim} \ \ \end{verbatim} zagradi pomoću  znakova:
+    \end{itemize}
+
+
+    \begin{columns}
+    \column{0.5\textwidth}
+    \begin{verbatim}
+    \begin{displaymath}
+                \xymatrix{
+                        \bullet \ar@/^/[r]
+                            \ar@/_/@{.>}[r] &
+                        \bullet }
+    \end{displaymath}
+    \end{verbatim}
+    \column{0.5\textwidth}
+    \begin{displaymath}
+                \xymatrix{
+                        \bullet \ar@/^/[r]
+                           \ar@/_/@{.>}[r] &
+                        \bullet }
+\end{displaymath}
+\end{columns}
+
+\end{frame}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
